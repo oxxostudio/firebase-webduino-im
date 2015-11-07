@@ -143,8 +143,9 @@
     width: 0;
     height: 0;
     border-width: 5px 8px;
-    border-color: transparent #ccc transparent transparent;
+    border-color: transparent #fff transparent transparent;
     border-style: solid;
+    opacity:.7;
   }
   </style>
 </head>
@@ -250,6 +251,7 @@
 	    var  sa = document.querySelectorAll('.u2t');
 	    sa[sa.length-1].innerText = tt;
 	  }
+	  s.scrollTop = s.scrollHeight;
 
 	}, function(errorObject) {
 	  console.log("The read failed: " + errorObject.code);
