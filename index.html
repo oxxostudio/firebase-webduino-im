@@ -79,7 +79,27 @@
   }
   
 	.u1, .u2{
-		margin:5px 15px;
+    position: relative;
+		padding:5px 15px;
+		width:100%;
+	}
+  
+	.u1 i, .u2 i{
+		position:absolute;
+		top:-3px;
+		left:0px;
+		font-size:12px;
+		transform:scale(.8);
+		opacity:.3;
+	}
+  
+	.u1 i{
+		left:auto;
+		right:0px;
+	}
+
+	.u1{
+		text-align:right;
 	}
 
   .u1 .u1t {
@@ -89,7 +109,7 @@
     background: #09c;
     padding: 10px;
     border-radius: 5px;
-    margin-left: 10px;
+    margin-right: 10px;
     margin-top: 10px;
   }
   
@@ -98,9 +118,9 @@
     content: '';
     width: 0;
     height: 0;
-    left: -16px;
+    right: -16px;
     border-width: 5px 8px;
-    border-color: transparent #09c transparent transparent;
+    border-color: transparent  transparent transparent #09c;
     border-style: solid;
   }
   
@@ -108,7 +128,7 @@
     position: relative;
     display: inline-block;
     color: #000;
-    background: #ccc;
+    background: rgba(255,255,255,.7);
     padding: 10px;
     border-radius: 5px;
     margin-left: 10px;
@@ -144,32 +164,35 @@
 			b = document.getElementById('b'),
 			s = document.getElementById('s');
 
-	s.style.height = window.innerHeight - 120 + 'px';
+	s.style.height = window.innerHeight - 140 + 'px';
 
 	window.onresize = function(){
-		s.style.height = window.innerHeight - 120 + 'px';
+		s.style.height = window.innerHeight - 140 + 'px';
 	}
 
 	var myDataRef = new Firebase('https://webduino-im-test.firebaseio.com/');
 
-	function _push(name, text, userid) {
+	function _push(name, text, userid, time) {
 	  myDataRef.push({
 	    name: name,
 	    text: text,
-	    userid: userid // 增加一個 id 判斷是不是自己
+	    userid: userid, // 增加一個 id 判斷是不是自己
+	    time: time
 	  });
 	}
 
 	b.onclick = function(e) {
+		var date = new Date();
 	  if (n.value) {
-	    _push(n.value, m.value, n.value);
+	    _push(n.value, m.value, n.value, date.toLocaleString());
 	    m.value = '';
 	  }
 	};
 
 	m.onkeydown = function(e) {
 		if(e.keyCode == 13){
-	    _push(n.value, m.value, n.value);
+			var date = new Date();
+	    _push(n.value, m.value, n.value, date.toLocaleString());
 	    m.value = '';
 		}
 	};
@@ -183,12 +206,13 @@
 	  nn = val[val.length - 1].name;
 	  tt = val[val.length - 1].text;
 	  uu = val[val.length - 1].userid;
+	  time = val[val.length - 1].time;
 	  if (uu == n.value) {
-	    s.innerHTML += '<div class="u1">我 ( '+ nn +' ) <span class="u1t"></span></div>';
+	    s.innerHTML += '<div class="u1"><span class="u1t"></span> 我 ( '+ nn +' ) <i>'+time+'</i></div>';
 	    var  sa = document.querySelectorAll('.u1t');
 	    sa[sa.length-1].innerText = tt;
 	  } else {
-	    s.innerHTML += '<div class="u2">'+ nn + ' ' + '<span class="u2t"></span><br/>';
+	    s.innerHTML += '<div class="u2">'+ nn + '<i>'+time+'</i>' + '<span class="u2t"></span><br/>';
 	    var  sa = document.querySelectorAll('.u2t');
 	    sa[sa.length-1].innerText = tt;
 	  }
