@@ -10,12 +10,6 @@ var init = document.getElementById('init'),
   initBtn = document.getElementById('init-btn'),
   initNote = document.getElementById('init-note');
 
-s.style.height = window.innerHeight - input.offsetHeight + 'px';
-
-window.onresize = function() {
-  s.style.height = window.innerHeight - input.offsetHeight + 'px';
-}
-
 if (localStorage.firebaseUrl) {
   initInput.value = localStorage.firebaseUrl;
 }
@@ -42,6 +36,12 @@ function loadFirebase(url) {
   input.style.display = 'block';
   s.style.display = 'block';
   init.style.display = 'none';
+
+  s.style.height = window.innerHeight - input.offsetHeight + 'px';
+
+  window.onresize = function() {
+    s.style.height = window.innerHeight - input.offsetHeight + 'px';
+  }
 
   function _push(name, text, userid, time) {
     myDataRef.push({
