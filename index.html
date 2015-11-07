@@ -7,32 +7,81 @@
   <script src="https://cdn.firebase.com/js/client/2.0.2/firebase.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
   <style>
+  html,body{
+  	height:100%;
+  	margin:0;
+  	padding:0;
+  }
   body {
     font-size: 16px;
+    background-image:url(bg2.jpg);
+    background-size:cover;
+  	background-attachment: fixed;
+  	color:#fff;
+  }
+
+  div{
+  	box-sizing:border-box;
+  }
+
+  #content{
+  	position:relative;
+  	width:100%;
+		max-width: 500px;
+  	height:100%;
+  	margin:0 auto;
+    box-shadow:rgba(0,0,0,.8) 0 0 100px;
+    background-image:url(bg.jpg);
+    background-size:cover;
+  	background-attachment: fixed;
   }
   
-  #n,
-  #m {
+  #input{
+  	position:absolute;
+  	bottom:0;
+  	left:0;
+  	padding:20px;
+  	width:100%;
+  	background:rgba(0,0,0,.5);
+  	color:#fff;
+    box-shadow:#000 0 0px 30px,rgba(0,0,0,.5) 0 -1px 0;
+  }
+
+  #n,#m {
     margin: 5px;
     height: 24px;
     font-size: 16px;
-    width: 160px;
+    width: calc(100% - 160px);
+    background:rgba(0,0,0,.5);
+    border:none;
+    border:1px solid #555;
+    color:#fff;
   }
   
   #b {
-    margin-top: 10px;
+  	position:absolute;
     font-size: 16px;
-    width: 100px;
-    padding: 10px;
+    width: 80px;
+    height: 70px;
+    line-height:65px;
+    right:20px;
+    top:25px;
+    background:rgba(0,0,0,.5);
+    color:#fff;
+    border:1px solid #555;
   }
   
   #s {
-    margin-top: 15px;
-    border-top: 1px dotted #666;
+  	width:100%;
     padding: 10px;
+    overflow: auto;
   }
   
-  .u1 {
+	.u1, .u2{
+		margin:5px 15px;
+	}
+
+  .u1 .u1t {
     position: relative;
     display: inline-block;
     color: #fff;
@@ -43,18 +92,18 @@
     margin-top: 10px;
   }
   
-  .u1:before {
+  .u1 .u1t:before {
     position: absolute;
     content: '';
     width: 0;
     height: 0;
-    left: -20px;
-    border-width: 5px 10px;
+    left: -16px;
+    border-width: 5px 8px;
     border-color: transparent #09c transparent transparent;
     border-style: solid;
   }
   
-  .u2 {
+  .u2 .u2t {
     position: relative;
     display: inline-block;
     color: #000;
@@ -65,13 +114,13 @@
     margin-top: 10px;
   }
   
-  .u2:before {
+  .u2 .u2t:before {
     position: absolute;
-    left: -20px;
+    left: -16px;
     content: '';
     width: 0;
     height: 0;
-    border-width: 5px 10px;
+    border-width: 5px 8px;
     border-color: transparent #ccc transparent transparent;
     border-style: solid;
   }
@@ -79,19 +128,26 @@
 </head>
 
 <body>
-  暱稱：
-  <input type="text" id="n">
-  <br/> 訊息：
-  <input type="text" id="m">
-  <br/>
-  <button id="b">送出</button>
-  <div id="s"></div>
+	<div id="content">
+		<div id="input">
+		  暱稱：<input type="text" id="n"><br/> 
+		  訊息：<input type="text" id="m"><br/>
+		  <button id="b">送出</button>
+	  </div>
+	  <div id="s"></div>
+  </div>
 </body>
 <script>
-	var n = document.getElementById('n');
-	var m = document.getElementById('m');
-	var b = document.getElementById('b');
-	var s = document.getElementById('s');
+	var n = document.getElementById('n'),
+			m = document.getElementById('m'),
+			b = document.getElementById('b'),
+			s = document.getElementById('s');
+
+	s.style.height = window.innerHeight - 120 + 'px';
+
+	window.onresize = function(){
+		s.style.height = window.innerHeight - 120 + 'px';
+	}
 
 	var myDataRef = new Firebase('https://webduino-im-test.firebaseio.com/');
 
@@ -99,7 +155,7 @@
 	  myDataRef.push({
 	    name: name,
 	    text: text,
-	    userid: userid // 增加一個 id
+	    userid: userid // 增加一個 id 判斷是不是自己
 	  });
 	}
 
@@ -108,6 +164,13 @@
 	    _push(n.value, m.value, n.value);
 	    m.value = '';
 	  }
+	};
+
+	m.onkeydown = function(e) {
+		if(e.keyCode == 13){
+	    _push(n.value, m.value, n.value);
+	    m.value = '';
+		}
 	};
 
 
@@ -119,11 +182,14 @@
 	  nn = val[val.length - 1].name;
 	  tt = val[val.length - 1].text;
 	  uu = val[val.length - 1].userid;
-	  console.log(nn);
 	  if (uu == n.value) {
-	    s.innerHTML += '我 <span class="u1">' + tt + '</span><br/>';
+	    s.innerHTML += '<div class="u1">我 ( '+ nn +' ) <span class="u1t"></span></div>';
+	    var  sa = document.querySelectorAll('.u1t');
+	    sa[sa.length-1].innerText = tt;
 	  } else {
-	    s.innerHTML += nn + ' ' + '<span class="u2">' + tt + '</span><br/>';
+	    s.innerHTML += '<div class="u2">'+ nn + ' ' + '<span class="u2t"></span><br/>';
+	    var  sa = document.querySelectorAll('.u2t');
+	    sa[sa.length-1].innerText = tt;
 	  }
 
 	}, function(errorObject) {
