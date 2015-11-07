@@ -95,7 +95,7 @@
   
 	.u1 i{
 		left:auto;
-		right:0px;
+		right:5px;
 	}
 
 	.u1{
@@ -172,6 +172,10 @@
 
 	var myDataRef = new Firebase('https://webduino-im-test.firebaseio.com/');
 
+	if(localStorage.imusername){
+		n.value = localStorage.imusername;
+	}
+
 	function _push(name, text, userid, time) {
 	  myDataRef.push({
 	    name: name,
@@ -183,18 +187,24 @@
 
 	b.onclick = function(e) {
 		var date = new Date();
+		var time = date.getYear()+1990+'/'+date.getMonth()+1+'/'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
 	  if (n.value) {
-	    _push(n.value, m.value, n.value, date.toLocaleString());
+	  	localStorage.imusername = n.value;
+	    _push(n.value, m.value, n.value, time);
 	    m.value = '';
 	  }
 	};
 
 	m.onkeydown = function(e) {
-		if(e.keyCode == 13){
-			var date = new Date();
-	    _push(n.value, m.value, n.value, date.toLocaleString());
-	    m.value = '';
-		}
+	  if (n.value) {
+			if(e.keyCode == 13){
+		  	localStorage.imusername = n.value;
+				var date = new Date();
+				var time = date.getYear()+'/'+date.getMonth()+1+'/'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+		    _push(n.value, m.value, n.value, time);
+		    m.value = '';
+			}
+	  }
 	};
 
 
@@ -212,7 +222,7 @@
 	    var  sa = document.querySelectorAll('.u1t');
 	    sa[sa.length-1].innerText = tt;
 	  } else {
-	    s.innerHTML += '<div class="u2">'+ nn + '<i>'+time+'</i>' + '<span class="u2t"></span><br/>';
+	    s.innerHTML += '<div class="u2">'+ nn + '  <i>'+time+'</i>' + '<span class="u2t"></span><br/>';
 	    var  sa = document.querySelectorAll('.u2t');
 	    sa[sa.length-1].innerText = tt;
 	  }
