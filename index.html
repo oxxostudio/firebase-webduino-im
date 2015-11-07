@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Firebase Webduino IM</title>
+  <script src="https://cdn.firebase.com/js/client/2.0.2/firebase.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <style>
+  body {
+    font-size: 16px;
+  }
+  
+  #n,
+  #m {
+    margin: 5px;
+    height: 24px;
+    font-size: 16px;
+    width: 160px;
+  }
+  
+  #b {
+    margin-top: 10px;
+    font-size: 16px;
+    width: 100px;
+    padding: 10px;
+  }
+  
+  #s {
+    margin-top: 15px;
+    border-top: 1px dotted #666;
+    padding: 10px;
+  }
+  
+  .u1 {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    background: #09c;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+  
+  .u1:before {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    left: -20px;
+    border-width: 5px 10px;
+    border-color: transparent #09c transparent transparent;
+    border-style: solid;
+  }
+  
+  .u2 {
+    position: relative;
+    display: inline-block;
+    color: #000;
+    background: #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+  
+  .u2:before {
+    position: absolute;
+    left: -20px;
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 5px 10px;
+    border-color: transparent #ccc transparent transparent;
+    border-style: solid;
+  }
+  </style>
+</head>
+
+<body>
+  暱稱：
+  <input type="text" id="n">
+  <br/> 訊息：
+  <input type="text" id="m">
+  <br/>
+  <button id="b">送出</button>
+  <div id="s"></div>
+</body>
+<script>
+	var n = document.getElementById('n');
+	var m = document.getElementById('m');
+	var b = document.getElementById('b');
+	var s = document.getElementById('s');
+
+	var myDataRef = new Firebase('https://webduino-im-test.firebaseio.com/');
+
+	function _push(name, text, userid) {
+	  myDataRef.push({
+	    name: name,
+	    text: text,
+	    userid: userid // 增加一個 id
+	  });
+	}
+
+	b.onclick = function(e) {
+	  if (n.value) {
+	    _push(n.value, m.value, n.value);
+	    m.value = '';
+	  }
+	};
+
+
+	myDataRef.on("value", function(snapshot) {
+	  var val = [];
+	  snapshot.forEach(function(data) {
+	    val.push(data.val());
+	  });
+	  nn = val[val.length - 1].name;
+	  tt = val[val.length - 1].text;
+	  uu = val[val.length - 1].userid;
+	  console.log(nn);
+	  if (uu == n.value) {
+	    s.innerHTML += '我 <span class="u1">' + tt + '</span><br/>';
+	  } else {
+	    s.innerHTML += nn + ' ' + '<span class="u2">' + tt + '</span><br/>';
+	  }
+
+	}, function(errorObject) {
+	  console.log("The read failed: " + errorObject.code);
+	});
+</script>
+
+</html>
