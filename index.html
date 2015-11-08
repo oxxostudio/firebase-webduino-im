@@ -11,20 +11,24 @@
 
 <body>
   <div id="content">
+    <header>Webduino IOT 聊天室
+    </header>
     <div id="init">
-      <h1>Webduino IOT 操控聊天室</h1>
-      <span id="init-span">請輸入對應的 Firebase 資料庫名稱</span>
+      <h1>Webduino IOT 聊天室</h1>
+      <span>對應的 Firebase 資料庫名稱</span>
       <br/>
       <input type="text" id="init-input">
+      <br/>
+      <span>暱稱</span>
+      <br/>
+      <input type="text" id="init-name-input">
       <br/>
       <button id="init-btn">送出</button>
       <br/>
       <i id="init-note"></i>
     </div>
     <div id="input">
-      暱稱：
-      <input type="text" id="n">
-      <br/> 訊息：
+      <span id="n"></span> :
       <input type="text" id="m">
       <br/>
       <button id="b">送出</button>

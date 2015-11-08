@@ -7,6 +7,7 @@ var n = document.getElementById('n'),
 var init = document.getElementById('init'),
   initSpan = document.getElementById('init-span'),
   initInput = document.getElementById('init-input'),
+  initInputName = document.getElementById('init-name-input'),
   initBtn = document.getElementById('init-btn'),
   initNote = document.getElementById('init-note');
 
@@ -14,28 +15,39 @@ if (localStorage.firebaseUrl) {
   initInput.value = localStorage.firebaseUrl;
 }
 
-initBtn.onclick = function() {
-  loadFirebase(initInput.value);
-  localStorage.firebaseUrl = initInput.value;
+if (localStorage.imusername) {
+  initInputName.value = localStorage.imusername;
 }
-initInput.onkeydown = function(e) {
+
+initBtn.onclick = function() {
+  start();
+}
+initInputName.onkeydown = function(e) {
   if (e.keyCode == 13) {
-    loadFirebase(initInput.value);
-    localStorage.firebaseUrl = initInput.value;
+    start();
   }
 }
 
-function loadFirebase(url) {
+function start(){
+  if (initInput.value && initInputName.value) {
+    loadFirebase(initInput.value, initInputName.value);
+    localStorage.firebaseUrl = initInput.value;
+    localStorage.imusername = initInputName.value;
+    initNote.innerText = '';
+  } else {
+    initNote.innerText = '請輸入完整資訊';
+  }
+}
+
+function loadFirebase(url, yourName) {
 
   var myDataRef = new Firebase('https://' + url + '.firebaseio.com/');
-
-  if (localStorage.imusername) {
-    n.value = localStorage.imusername;
-  }
 
   input.style.display = 'block';
   s.style.display = 'block';
   init.style.display = 'none';
+
+  n.innerText = yourName;
 
   s.style.height = window.innerHeight - input.offsetHeight + 'px';
 
@@ -55,22 +67,16 @@ function loadFirebase(url) {
   b.onclick = function(e) {
     var date = new Date();
     var time = date.getFullYear() + '/' + (date.getMonth() + 1).toString() + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-    if (n.value) {
-      localStorage.imusername = n.value;
-      _push(n.value, m.value, n.value, time);
-      m.value = '';
-    }
+    _push(yourName, m.value, yourName, time);
+    m.value = '';
   };
 
   m.onkeydown = function(e) {
-    if (n.value) {
-      if (e.keyCode == 13) {
-        localStorage.imusername = n.value;
-        var date = new Date();
-        var time = date.getFullYear() + '/' + (date.getMonth() + 1).toString() + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-        _push(n.value, m.value, n.value, time);
-        m.value = '';
-      }
+    if (e.keyCode == 13) {
+      var date = new Date();
+      var time = date.getFullYear() + '/' + (date.getMonth() + 1).toString() + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      _push(yourName, m.value, yourName, time);
+      m.value = '';
     }
   };
 
@@ -106,7 +112,7 @@ function loadFirebase(url) {
     }
 
 
-    if (uu == n.value) {
+    if (uu == yourName) {
       s.innerHTML += '<div class="u1"><span class="u1t"></span> 我 ( ' + nn + ' ) <i>' + time + '</i></div>';
       var sa = document.querySelectorAll('.u1t');
       sa[sa.length - 1].innerText = tt;
