@@ -4,26 +4,41 @@
 	<meta charset="UTF-8">
 	<title>webduino-iphone-im</title>
 	<style>
+		body, html{
+			height:100%;
+			margin:0;
+			padding:0;
+		}
 		body{
 			background-image:url(bg-street.jpg);
 			background-size:cover;
  		  background-attachment: fixed;
+ 		  text-align: center;
+		}
+		body:before{
+			content:'';
+			width:1px;
+			height:100%;
+			display:inline-block;
+			vertical-align: middle;
 		}
 		#iphone{
+			display:inline-block;
 			position:relative;
 			width:360px;
 			height:707px;
 			background-image:url(iphone6.png);
 			background-size:cover;
-			margin:40px auto 0;
+			margin:20px auto 0;
+			vertical-align: middle;
 		}
 		#iphone iframe{
-			border:none;
 			position:absolute;
 			top:80px;
 			left:18px;
 			height:535px;
 			width:326px;
+			border:none;
 		}
 	</style>
 </head>
