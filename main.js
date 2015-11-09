@@ -11,6 +11,8 @@ var init = document.getElementById('init'),
   initBtn = document.getElementById('init-btn'),
   initNote = document.getElementById('init-note');
 
+var windowHeight = window.innerHeight;
+
 if (localStorage.firebaseUrl) {
   initInput.value = localStorage.firebaseUrl;
 }
@@ -49,9 +51,10 @@ function loadFirebase(url, yourName) {
 
   // n.innerText = yourName;
 
-  s.style.height = window.innerHeight - input.offsetHeight + 'px';
+  s.style.height = windowHeight - input.offsetHeight + 'px';
 
   window.onresize = function() {
+    windowHeight = window.innerHeight;
     s.style.height = window.innerHeight - input.offsetHeight + 'px';
   }
 
