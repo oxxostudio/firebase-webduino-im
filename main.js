@@ -47,7 +47,7 @@ function loadFirebase(url, yourName) {
   s.style.display = 'block';
   init.style.display = 'none';
 
-  n.innerText = yourName;
+  // n.innerText = yourName;
 
   s.style.height = window.innerHeight - input.offsetHeight + 'px';
 
@@ -113,11 +113,11 @@ function loadFirebase(url, yourName) {
 
 
     if (uu == yourName) {
-      s.innerHTML += '<div class="u1"><span class="u1t"></span> 我 ( ' + nn + ' ) <i>' + time + '</i></div>';
+      s.innerHTML += '<div class="u1"><span class="u1t"></span><b> 我(' + nn + ')</b> <i>' + time + '</i></div>';
       var sa = document.querySelectorAll('.u1t');
       sa[sa.length - 1].innerText = tt;
     } else {
-      s.innerHTML += '<div class="u2">' + nn + '  <i>' + time + '</i>' + '<span class="u2t"></span><br/>';
+      s.innerHTML += '<div class="u2"><b>' + nn + '</b>  <i>' + time + '</i>' + '<span class="u2t"></span><br/>';
       var sa = document.querySelectorAll('.u2t');
       sa[sa.length - 1].innerText = tt;
     }
