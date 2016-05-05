@@ -30,7 +30,7 @@ initInputName.onkeydown = function(e) {
   }
 }
 
-function start(){
+function start() {
   if (initInput.value && initInputName.value) {
     loadFirebase(initInput.value, initInputName.value);
     localStorage.firebaseUrl = initInput.value;
@@ -83,40 +83,36 @@ function loadFirebase(url, yourName) {
     }
   };
 
+  myDataRef.limitToLast(1).on("child_added", function(snapshot) {
+    val = snapshot.val();
 
-  myDataRef.on("value", function(snapshot) {
-    var val = [];
-    snapshot.forEach(function(data) {
-      val.push(data.val());
-    });
-
-    if (!val[val.length - 1].name) {
+    if (!val.name) {
       nn = '(沒有名字)';
     } else {
-      nn = val[val.length - 1].name;
+      nn = val.name;
     }
 
-    if (!val[val.length - 1].text) {
+    if (!val.text) {
       tt = '(沒有內容)';
     } else {
-      tt = val[val.length - 1].text;
+      tt = val.text;
     }
 
-    if (!val[val.length - 1].userid) {
+    if (!val.userid) {
       uu = '(沒有名字)';
     } else {
-      uu = val[val.length - 1].userid;
+      uu = val.userid;
     }
 
-    if (!val[val.length - 1].time) {
+    if (!val.time) {
       time = '00:00:00';
     } else {
-      time = val[val.length - 1].time;
+      time = val.time;
     }
 
 
     if (uu == yourName) {
-      s.innerHTML += '<div class="u1"><span class="u1t"></span><b> 我(' + nn + ')</b> <i>' + time + '</i></div>';
+      s.innerHTML += '<div class="u1"><span class="u1t"></span><b> 我 (' + nn + ')</b> <i>' + time + '</i></div>';
       var sa = document.querySelectorAll('.u1t');
       sa[sa.length - 1].innerText = tt;
     } else {
@@ -125,9 +121,6 @@ function loadFirebase(url, yourName) {
       sa[sa.length - 1].innerText = tt;
     }
     s.scrollTop = s.scrollHeight;
-
-  }, function(errorObject) {
-    console.log("The read failed: " + errorObject.code);
   });
 
 }
