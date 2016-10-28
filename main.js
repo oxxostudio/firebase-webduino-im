@@ -110,6 +110,10 @@ function loadFirebase(url, yourName) {
       time = val.time;
     }
 
+    if (val.text == 'clean data'){
+      myDataRef.set({});
+    }
+
 
     if (uu == yourName) {
       s.innerHTML += '<div class="u1"><span class="u1t"></span><b> 我 (' + nn + ')</b> <i>' + time + '</i></div>';
